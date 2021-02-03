@@ -50,6 +50,15 @@ public class WeaponSwitch : MonoBehaviour
         {
             SelectWeapon();
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            selectedWeapon = 3;
+        }
+        if (previousSelectedWeapon != selectedWeapon)
+        {
+            SelectWeapon();
+        }
     }
 
     void SelectWeapon ()
