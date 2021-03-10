@@ -6,6 +6,11 @@ public class SLOWMOTION : MonoBehaviour
 {
     public float SlowMotion;
     public static bool HeldDown = false;
+    public GameObject PP;
+    public GameObject PostProcessing;
+    public AudioSource Music;
+    public float Volume;
+    public float MusicSpeed;
     
     // Start is called before the first frame update
     void Start()
@@ -23,14 +28,26 @@ public class SLOWMOTION : MonoBehaviour
             if (HeldDown)
             {
                 Normal();
+                PP.SetActive(false);
+                PostProcessing.SetActive(true);
+                Music.pitch = MusicSpeed;
+                Music.volume = Volume;
             }
             else
             {
                 SlowDown();
+                PP.SetActive(true);
+                PostProcessing.SetActive(false);
+                Music.pitch = Time.timeScale * MusicSpeed * 2;
+                Music.volume = Volume / 2;
             }
             
         }
-        
+        if (Input.GetKeyDown(KeyCode.Mouse3))
+        {
+
+
+        }
     }   
 
     void SlowDown()
@@ -38,6 +55,7 @@ public class SLOWMOTION : MonoBehaviour
         Time.timeScale = SlowMotion;
         HeldDown = true;
         Time.fixedDeltaTime = Time.timeScale * .02f;
+        
     }
 
     void Normal()

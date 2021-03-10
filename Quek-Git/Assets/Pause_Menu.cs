@@ -9,6 +9,10 @@ public class Pause_Menu : MonoBehaviour
     public static bool GameIsPaused = false;
     public GameObject PauseMenuUI;
     public GameObject Script;
+    public GameObject PostProcessing;
+    public GameObject PauseProcessing;
+    public AudioSource Music;
+    public float Volume;
     // Update is called once per frame
     void Update()
     {
@@ -18,10 +22,12 @@ public class Pause_Menu : MonoBehaviour
             if (GameIsPaused)
             {
                 Resume();
+                Music.volume = Volume;
             }
             else
             {
                 Pause();
+                Music.volume = Volume / 10;
             }
         }
     }
@@ -34,6 +40,9 @@ public class Pause_Menu : MonoBehaviour
         Script.SetActive(true);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        PostProcessing.SetActive(true);
+        PauseProcessing.SetActive(false);
+        Music.volume = Volume;
     }
 
     void Pause()
@@ -44,6 +53,9 @@ public class Pause_Menu : MonoBehaviour
         Script.SetActive(false);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        PostProcessing.SetActive(false);
+        PauseProcessing.SetActive(true);
+       
     }
 
     public void LoadMenu()

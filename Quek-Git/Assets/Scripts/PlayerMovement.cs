@@ -46,6 +46,9 @@ public class PlayerMovement : MonoBehaviour {
     private Vector3 normalVector = Vector3.up;
     private Vector3 wallNormalVector;
 
+    //Dashing
+    public float DashSpeed;
+    public float DashLength;
     void Awake() {
         rb = GetComponent<Rigidbody>();
     }
@@ -145,8 +148,8 @@ public class PlayerMovement : MonoBehaviour {
 
     private void Jump() {
         if (grounded && readyToJump) {
-            readyToJump = false;
 
+            readyToJump = false;
             //Add jump forces
             rb.AddForce(Vector2.up * jumpForce * 1.5f);
             rb.AddForce(normalVector * jumpForce * 0.5f);
@@ -160,8 +163,35 @@ public class PlayerMovement : MonoBehaviour {
             
             Invoke(nameof(ResetJump), jumpCooldown);
         }
+
+        
+
     }
     
+
+    private void DoubleJump()
+    {
+
+        if (grounded = false && readyToJump)
+        {
+            
+
+            //Add jump forces
+            rb.AddForce(Vector2.up * jumpForce * 1.5f);
+            rb.AddForce(normalVector * jumpForce * 0.5f);
+
+            //If jumping while falling, reset y velocity.
+            Vector3 vel = rb.velocity;
+            if (rb.velocity.y < 0.5f)
+                rb.velocity = new Vector3(vel.x, 0, vel.z);
+            else if (rb.velocity.y > 0)
+                rb.velocity = new Vector3(vel.x, vel.y / 2, vel.z);
+
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
+
+
+    }
     private void ResetJump() {
         readyToJump = true;
     }
@@ -266,5 +296,16 @@ public class PlayerMovement : MonoBehaviour {
     private void StopGrounded() {
         grounded = false;
     }
-    
+
+
+    void Dash()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            rb = GetComponent<Rigidbody>();
+            rb.AddForce(0, 0, 10000, ForceMode.Impulse);
+
+        }
+        
+    }
 }
